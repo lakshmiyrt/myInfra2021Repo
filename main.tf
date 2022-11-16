@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 resource "aws_vpc" "main" {
-  cidr_block = "172.16.0.0/16"
+  cidr_block = "71.168.137.191/32"
   instance_tenancy = "default"
   tags = {
     Name = "main"
@@ -19,14 +19,14 @@ resource "aws_security_group" "jenkins-sg-2022" {
     from_port   = 8080
     to_port     = 8080
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["71.168.137.191/32"]
   }
 
  ingress {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["71.168.137.191/32"]
   }
 
  # outbound from jenkis server
@@ -38,17 +38,17 @@ resource "aws_security_group" "jenkins-sg-2022" {
   }
 
   tags= {
-    Name = var.security_group
+    Name = var.launch-wizard-3
   }
 }
 
 resource "aws_instance" "myFirstInstance" {
-  ami           = var.ami_id
-  key_name = var.key_name
-  instance_type = var.instance_type
-  vpc_security_group_ids = [aws_security_group.jenkins-sg-2022.id]
+  ami =  "ami-052efd3df9dad4825"
+  key_name    =  "JenkinServerKeypair"
+  instance_type = "t2.micro"
+  vpc_security_group_ids = [aws_security_group.launch-wizard-3.id]
   tags= {
-    Name = var.tag_name
+    Name = "JenkinsServer
   }
 }
 
